@@ -15,8 +15,11 @@ How to use:
 2. Change the WI-FI settings. 
 3. Define switches and callbacks
 3. Flash 
-4. Scan for new devices in Alexa
-5. Say "turn on" box
+
+
+Previous post
+https://github.com/kakopappa/arduino-esp8266-alexa-wemo-switch/edit/master/README.md
+
 
 
 
