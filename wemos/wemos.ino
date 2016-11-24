@@ -4,8 +4,14 @@
 #include <functional>
 #include "switch.h"
 #include "UpnpBroadcastResponder.h"
+#include "CallbackFunction.h"
 
+// prototypes
 boolean connectWifi();
+void s1On();
+void s1Off();
+void s2On();
+void s2Off();
 
 const char* ssid = "Aruna";
 const char* password = "********";
@@ -15,13 +21,13 @@ boolean wifiConnected = false;
 UpnpBroadcastResponder upnpBroadcastResponder;
 
 // Define all switches here. Max 14
-// Format: Alexa invocation name, local port no.
-Switch s1("office lights", 1501);
-Switch s2("kitchen lights", 1502);
+// Format: Alexa invocation name, local port no, on callback, off callback
+Switch s1("office lights", 1501, s1On, s1Off);
+Switch s2("kitchen lights", 1502, s2On, s2Off);
 
 void setup()
 {
-   Serial.begin(115200);
+  Serial.begin(115200);
    
   // Initialise wifi connection
   wifiConnected = connectWifi();
@@ -42,6 +48,22 @@ void loop()
 	 }
 }
 
+void s1On() {
+    // Switch 1 turn on
+}
+
+void s1Off() {
+  // Switch 1 turn off
+}
+
+
+void s2On() {
+    // Switch 2 turn on
+}
+
+void s2Off() {
+  // Switch 2 turn off
+}
 
 // connect to wifi – returns true if successful or false if not
 boolean connectWifi(){

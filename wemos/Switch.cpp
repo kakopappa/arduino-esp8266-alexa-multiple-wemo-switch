@@ -1,11 +1,12 @@
 #include "Switch.h"
-
+#include "CallbackFunction.h"
  
 //<<constructor>>
 Switch::Switch(){
   
 }
-Switch::Switch(String alexaInvokeName,unsigned int port){
+//Switch::Switch(String alexaInvokeName,unsigned int port){
+Switch::Switch(String alexaInvokeName, unsigned int port, CallbackFunction oncb, CallbackFunction offcb){
     uint32_t chipId = ESP.getChipId();
     char uuid[64];
     sprintf_P(uuid, PSTR("38323636-4558-4dda-9188-cda0e6%02x%02x%02x"),
@@ -17,7 +18,9 @@ Switch::Switch(String alexaInvokeName,unsigned int port){
     persistent_uuid = "Socket-1_0-" + serial +"-"+ String(localPort);
     device_name = alexaInvokeName;
     localPort = port;
-
+    onCallback = oncb;
+    offCallback = offcb;
+    
     startWebServer();
 }
  
@@ -94,10 +97,12 @@ void Switch::handleUpnpControl(){
 
   if(request.indexOf("<BinaryState>1</BinaryState>") > 0) {
       Serial.println("Got Turn on request");
+      onCallback();
   }
 
   if(request.indexOf("<BinaryState>0</BinaryState>") > 0) {
       Serial.println("Got Turn off request");
+      offCallback();
   }
   
   server->send(200, "text/plain", "");
