@@ -12,7 +12,7 @@ How to use:
 1. Download the code
 2. Open wemos.ino in the Arduino editor.
 2. Change the WI-FI settings. 
-3. Define switches and callbacks(https://github.com/kakopappa/arduino-esp8266-alexa-multiple-wemo-switch/blob/master/wemos/wemos.ino#L41)
+3. Define switches and callbacks
 3. Flash 
 4. Enjoy
 
