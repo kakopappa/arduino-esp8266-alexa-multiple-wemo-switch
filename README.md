@@ -1,9 +1,7 @@
-#arduino-esp8266-alexa-multiple-wemo-switch
+#Arduino Esp8266 Alexa Multiple Belkin wemo switch emulator
 =======
 
-Just finished coding. Have't tested this yet!
-
-Amazon Alexa + WeMos switch to emulate more than one socket using Arduino D1 Mini
+This project supports emulating upto 14 belkin wemo switches using 1 ESP 8266  chip.
 
 Parts you need:
 
@@ -12,12 +10,13 @@ WeMos D1-mini ($4.00)  http://www.aliexpress.com/store/product/D1-mini-Mini-Node
 How to use:
 
 1. Download the code
+2. Open wemos.ino in the Arduino editor.
 2. Change the WI-FI settings. 
 3. Define switches and callbacks
 3. Flash 
+4. Enjoy
 
-
-Previous post
+Previous post on single wemo switch
 https://github.com/kakopappa/arduino-esp8266-alexa-wemo-switch/edit/master/README.md
 
 
