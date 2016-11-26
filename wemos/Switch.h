@@ -10,14 +10,15 @@
  
 class Switch {
 private:
+        ESP8266WebServer *server = NULL;
+        WiFiUDP UDP;
         String serial;
         String persistent_uuid;
         String device_name;
         unsigned int localPort;
         CallbackFunction onCallback;
         CallbackFunction offCallback;
-        ESP8266WebServer *server = NULL;
-        WiFiUDP UDP;                
+    
         void startWebServer();
         void handleEventservice();
         void handleUpnpControl();
@@ -27,6 +28,8 @@ public:
         Switch();
         Switch(String alexaInvokeName, unsigned int port, CallbackFunction onCallback, CallbackFunction offCallback);
         ~Switch();
+        String getAlexaInvokeName();
+        void serverLoop();
         void respondToSearch(IPAddress& senderIP, unsigned int senderPort);
 };
  

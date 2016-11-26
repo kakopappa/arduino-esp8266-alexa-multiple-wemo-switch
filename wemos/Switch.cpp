@@ -1,9 +1,11 @@
 #include "Switch.h"
 #include "CallbackFunction.h"
- 
+
+
+        
 //<<constructor>>
 Switch::Switch(){
-  
+    Serial.println("default constructor called");
 }
 //Switch::Switch(String alexaInvokeName,unsigned int port){
 Switch::Switch(String alexaInvokeName, unsigned int port, CallbackFunction oncb, CallbackFunction offcb){
@@ -15,7 +17,8 @@ Switch::Switch(String alexaInvokeName, unsigned int port, CallbackFunction oncb,
           (uint16_t)   chipId        & 0xff);
     
     serial = String(uuid);
-    persistent_uuid = "Socket-1_0-" + serial +"-"+ String(localPort);
+    persistent_uuid = "Socket-1_0-" + serial+"-"+ String(port);
+        
     device_name = alexaInvokeName;
     localPort = port;
     onCallback = oncb;
@@ -23,9 +26,18 @@ Switch::Switch(String alexaInvokeName, unsigned int port, CallbackFunction oncb,
     
     startWebServer();
 }
+
+
  
 //<<destructor>>
 Switch::~Switch(){/*nothing to destruct*/}
+
+void Switch::serverLoop(){
+    if (server != NULL) {
+        server->handleClient();
+        delay(1);
+    }
+}
 
 void Switch::startWebServer(){
   server = new ESP8266WebServer(localPort);
@@ -33,6 +45,7 @@ void Switch::startWebServer(){
   server->on("/", [&]() {
     handleRoot();
   });
+ 
 
   server->on("/setup.xml", [&]() {
     handleSetupXml();
@@ -48,6 +61,9 @@ void Switch::startWebServer(){
 
   //server->onNotFound(handleNotFound);
   server->begin();
+
+  Serial.println("WebServer started on port: ");
+  Serial.println(localPort);
 }
  
 void Switch::handleEventservice(){
@@ -109,7 +125,6 @@ void Switch::handleUpnpControl(){
 }
 
 void Switch::handleRoot(){
-  Serial.println("handleRoot");
   server->send(200, "text/plain", "You should tell Alexa to discover devices");
 }
 
@@ -119,7 +134,7 @@ void Switch::handleSetupXml(){
   IPAddress localIP = WiFi.localIP();
   char s[16];
   sprintf(s, "%d.%d.%d.%d", localIP[0], localIP[1], localIP[2], localIP[3]);
-
+  
   String setup_xml = "<?xml version=\"1.0\"?>"
         "<root>"
          "<device>"
@@ -150,6 +165,10 @@ void Switch::handleSetupXml(){
     Serial.println(setup_xml);
 }
 
+String Switch::getAlexaInvokeName() {
+    return device_name;
+}
+
 void Switch::respondToSearch(IPAddress& senderIP, unsigned int senderPort) {
   Serial.println("");
   Serial.print("Sending response to ");
@@ -164,7 +183,7 @@ void Switch::respondToSearch(IPAddress& senderIP, unsigned int senderPort) {
   String response = 
        "HTTP/1.1 200 OK\r\n"
        "CACHE-CONTROL: max-age=86400\r\n"
-       "DATE: Fri, 15 Apr 2016 04:56:29 GMT\r\n"
+       "DATE: Sat, 26 Nov 2016 04:56:29 GMT\r\n"
        "EXT:\r\n"
        "LOCATION: http://" + String(s) + ":" + String(localPort) + "/setup.xml\r\n"
        "OPT: \"http://schemas.upnp.org/upnp/1/0/\"; ns=01\r\n"
@@ -174,7 +193,7 @@ void Switch::respondToSearch(IPAddress& senderIP, unsigned int senderPort) {
        "USN: uuid:" + persistent_uuid + "::urn:Belkin:device:**\r\n"
        "X-User-Agent: redsonic\r\n\r\n";
 
-  UDP.beginPacket(UDP.remoteIP(), UDP.remotePort());
+  UDP.beginPacket(senderIP, senderPort);
   UDP.write(response.c_str());
   UDP.endPacket();                    
 

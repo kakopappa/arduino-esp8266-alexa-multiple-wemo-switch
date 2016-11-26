@@ -14,7 +14,7 @@ public:
         ~UpnpBroadcastResponder();
         bool beginUdpMulticast();
         void serverLoop();
-        void addDevice(const Switch& device);
+        void addDevice(Switch& device);
 };
  
 #endif

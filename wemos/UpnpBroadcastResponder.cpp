@@ -1,15 +1,17 @@
 #include "UpnpBroadcastResponder.h"
 #include "Switch.h"
-
+#include <functional>
+ 
 // Multicast declarations
 IPAddress ipMulti(239, 255, 255, 250);
 const unsigned int portMulti = 1900;
 char packetBuffer[512];   
 
 #define MAX_SWITCHES 14
-Switch switches[MAX_SWITCHES];
+Switch switches[MAX_SWITCHES] = {};
+int numOfSwitchs = 0;
 
-#define numOfSwitchs (sizeof(switches)/sizeof(Switch)) //array size  
+//#define numOfSwitchs (sizeof(switches)/sizeof(Switch)) //array size  
  
 //<<constructor>>
 UpnpBroadcastResponder::UpnpBroadcastResponder(){
@@ -39,9 +41,16 @@ bool UpnpBroadcastResponder::beginUdpMulticast(){
   return state;
 }
 
-void UpnpBroadcastResponder::addDevice(const Switch& device) {
-  int arrSize = sizeof(switches) / sizeof(Switch);
-  switches[arrSize + 1] = device;
+//Switch *ptrArray;
+
+void UpnpBroadcastResponder::addDevice(Switch& device) {
+  Serial.print("Adding switch : ");
+  Serial.print(device.getAlexaInvokeName());
+  Serial.print(" index : ");
+  Serial.println(numOfSwitchs);
+  
+  switches[numOfSwitchs] = device;
+  numOfSwitchs++;
 }
 
 void UpnpBroadcastResponder::serverLoop(){
@@ -60,12 +69,16 @@ void UpnpBroadcastResponder::serverLoop(){
 
   if(request.indexOf('M-SEARCH') > 0) {
       if(request.indexOf("urn:Belkin:device:**") > 0) {
-      
+        Serial.println("Got UDP Belkin Request..");
+        
         // int arrSize = sizeof(switchs) / sizeof(Switch);
       
         for(int n = 0; n < numOfSwitchs; n++) {
             Switch &sw = switches[n];
-            sw.respondToSearch(senderIP, senderPort);
+
+            if (&sw != NULL) {
+              sw.respondToSearch(senderIP, senderPort);              
+            }
         }
       }
   }

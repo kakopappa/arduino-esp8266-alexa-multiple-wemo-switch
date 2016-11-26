@@ -8,26 +8,27 @@
 
 // prototypes
 boolean connectWifi();
-void s1On();
-void s1Off();
-void s2On();
-void s2Off();
 
+//on/off callbacks 
+void officeLightsOn();
+void officeLightsOff();
+void kitchenLightsOn();
+void kitchenLightsOff();
+
+// Change this before you flash
 const char* ssid = "Aruna";
-const char* password = "********";
+const char* password = "*****";
 
 boolean wifiConnected = false;
 
 UpnpBroadcastResponder upnpBroadcastResponder;
 
-// Define all switches here. Max 14
-// Format: Alexa invocation name, local port no, on callback, off callback
-Switch s1("office lights", 1501, s1On, s1Off);
-Switch s2("kitchen lights", 1502, s2On, s2Off);
+Switch *office = NULL;
+Switch *kitchen = NULL;
 
 void setup()
 {
-  Serial.begin(115200);
+  Serial.begin(9600);
    
   // Initialise wifi connection
   wifiConnected = connectWifi();
@@ -35,9 +36,14 @@ void setup()
   if(wifiConnected){
     upnpBroadcastResponder.beginUdpMulticast();
     
-    // Add your switches here
-    upnpBroadcastResponder.addDevice(s1);
-    upnpBroadcastResponder.addDevice(s2);
+    // Define your switches here. Max 14
+    // Format: Alexa invocation name, local port no, on callback, off callback
+    office = new Switch("office lights", 80, officeLightsOn, officeLightsOff);
+    kitchen = new Switch("kitchen lights", 81, kitchenLightsOn, kitchenLightsOff);
+
+    Serial.println("Adding switches upnp broadcast responder");
+    upnpBroadcastResponder.addDevice(*office);
+    upnpBroadcastResponder.addDevice(*kitchen);
   }
 }
  
@@ -45,24 +51,26 @@ void loop()
 {
 	 if(wifiConnected){
       upnpBroadcastResponder.serverLoop();
+      
+      kitchen->serverLoop();
+      office->serverLoop();
 	 }
 }
 
-void s1On() {
-    // Switch 1 turn on
+void officeLightsOn() {
+    Serial.print("Switch 1 turn on ...");
 }
 
-void s1Off() {
-  // Switch 1 turn off
+void officeLightsOff() {
+    Serial.print("Switch 1 turn off ...");
 }
 
-
-void s2On() {
-    // Switch 2 turn on
+void kitchenLightsOn() {
+    Serial.print("Switch 2 turn on ...");
 }
 
-void s2Off() {
-  // Switch 2 turn off
+void kitchenLightsOff() {
+  Serial.print("Switch 2 turn off ...");
 }
 
 // connect to wifi – returns true if successful or false if not
