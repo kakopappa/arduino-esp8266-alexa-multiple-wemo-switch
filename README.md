@@ -1,5 +1,4 @@
 #Arduino Esp8266 Alexa Multiple Belkin wemo switch emulator
-=======
 
 This project supports emulating upto 14 belkin wemo switches using 1 ESP 8266  chip.
 
