@@ -1,24 +1,17 @@
-#Arduino Esp8266 Alexa Multiple Belkin wemo switch emulator
+#Arduino Esp8266 Alexa Wemo switch emulator
 
-This project supports emulating upto 14 belkin wemo switches using 1 ESP 8266  chip.
+This project is completly based on the [forked repo](https://github.com/kakopappa/arduino-esp8266-alexa-multiple-wemo-switch), all the hard work was done by kakopappa. I just reworked their code to make it consumable as a Arduino library so it could be easily pulled into other projects.
 
-Parts you need:
+This library enables your esp8266 to simulate a Belkin Wemo switch. It can be discovered as a device by your Amazon Echo/Dot on the Smart home section. It supports calling the emulated device a custom name e.g. "Alexa, turn off test lights", where test lights is the custom name
 
-WeMos D1-mini ($4.00)  http://www.aliexpress.com/store/product/D1-mini-Mini-NodeMcu-4M-bytes-Lua-WIFI-Internet-of-Things-development-board-based-ESP8266/1331105_32529101036.html
+The library supports emulating up to 14 switches using 1 ESP8266 chip.
 
-How to use:
+## Installing
 
-1. Download the code
-2. Open wemos.ino in the Arduino editor.
-2. Change the WI-FI settings. 
-3. Define switches and callbacks
-3. Flash 
-4. Enjoy
+The downloaded code can be included as a new library into the IDE selecting the menu:
 
-Previous post on single wemo switch
-https://github.com/kakopappa/arduino-esp8266-alexa-wemo-switch/edit/master/README.md
+     Sketch / include Library / Add .Zip library
 
+Restart the Arduino IDE and follow the examples located at
 
-
-
-
+     File -> Examples -> Esp8266AlexaWemoEmulator

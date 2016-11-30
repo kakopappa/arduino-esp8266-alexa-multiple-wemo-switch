@@ -1,14 +1,14 @@
-#ifndef SWITCH_H
-#define SWITCH_H
- 
+#ifndef WemoSwitch_H
+#define WemoSwitch_H
+
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <WiFiUDP.h>
 #include "CallbackFunction.h"
 
- 
-class Switch {
+
+class WemoSwitch {
 private:
         ESP8266WebServer *server = NULL;
         WiFiUDP UDP;
@@ -18,19 +18,19 @@ private:
         unsigned int localPort;
         CallbackFunction onCallback;
         CallbackFunction offCallback;
-    
+
         void startWebServer();
         void handleEventservice();
         void handleUpnpControl();
         void handleRoot();
         void handleSetupXml();
 public:
-        Switch();
-        Switch(String alexaInvokeName, unsigned int port, CallbackFunction onCallback, CallbackFunction offCallback);
-        ~Switch();
+        WemoSwitch();
+        WemoSwitch(String alexaInvokeName, unsigned int port, CallbackFunction onCallback, CallbackFunction offCallback);
+        ~WemoSwitch();
         String getAlexaInvokeName();
         void serverLoop();
         void respondToSearch(IPAddress& senderIP, unsigned int senderPort);
 };
- 
+
 #endif
