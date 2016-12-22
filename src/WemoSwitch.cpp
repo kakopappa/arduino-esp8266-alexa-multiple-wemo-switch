@@ -5,7 +5,7 @@
 
 //<<constructor>>
 WemoSwitch::WemoSwitch(){
-    Serial.println("default constructor called");
+    //Serial.println("default constructor called");
 }
 //WemoSwitch::WemoSwitch(String alexaInvokeName,unsigned int port){
 WemoSwitch::WemoSwitch(String alexaInvokeName, unsigned int port, CallbackFunction oncb, CallbackFunction offcb){
