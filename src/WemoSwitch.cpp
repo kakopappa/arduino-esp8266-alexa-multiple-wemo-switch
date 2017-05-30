@@ -9,12 +9,12 @@ WemoSwitch::WemoSwitch(){
 }
 //WemoSwitch::WemoSwitch(String alexaInvokeName,unsigned int port){
 WemoSwitch::WemoSwitch(String alexaInvokeName, unsigned int port, CallbackFunction oncb, CallbackFunction offcb){
-    uint32_t chipId = ESP.getChipId();
+    uint32_t uniqueSwitchId = ESP.getChipId() + port;
     char uuid[64];
     sprintf_P(uuid, PSTR("38323636-4558-4dda-9188-cda0e6%02x%02x%02x"),
-          (uint16_t) ((chipId >> 16) & 0xff),
-          (uint16_t) ((chipId >>  8) & 0xff),
-          (uint16_t)   chipId        & 0xff);
+          (uint16_t) ((uniqueSwitchId >> 16) & 0xff),
+          (uint16_t) ((uniqueSwitchId >>  8) & 0xff),
+          (uint16_t)   uniqueSwitchId        & 0xff);
 
     serial = String(uuid);
     persistent_uuid = "Socket-1_0-" + serial+"-"+ String(port);
@@ -69,7 +69,7 @@ void WemoSwitch::startWebServer(){
 void WemoSwitch::handleEventservice(){
   Serial.println(" ########## Responding to eventservice.xml ... ########\n");
 
-  String eventservice_xml = "<?scpd xmlns=\"urn:Belkin:service-1-0\"?>"
+  String eventservice_xml = "<scpd xmlns=\"urn:Belkin:service-1-0\">"
         "<actionList>"
           "<action>"
             "<name>SetBinaryState</name>"
@@ -81,6 +81,8 @@ void WemoSwitch::handleEventservice(){
                 "<direction>in</direction>"
               "</argument>"
             "</argumentList>"
+          "</action>"
+          "</actionList>"
              "<serviceStateTable>"
               "<stateVariable sendEvents=\"yes\">"
                 "<name>BinaryState</name>"
@@ -93,7 +95,6 @@ void WemoSwitch::handleEventservice(){
                 "<defaultValue>0</defaultValue>"
               "</stateVariable>"
             "</serviceStateTable>"
-          "</action>"
         "</scpd>\r\n"
         "\r\n";
 
@@ -111,18 +112,39 @@ void WemoSwitch::handleUpnpControl(){
   Serial.print("request:");
   Serial.println(request);
 
+  Serial.println("Responding to Control request");
+
+  String response_xml = "";
+
   if(request.indexOf("<BinaryState>1</BinaryState>") > 0) {
       Serial.println("Got Turn on request");
       onCallback();
+      response_xml =  "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">"
+                        "<s:Body>"
+                          "<u:SetBinaryStateResponse xmlns:u=\"urn:Belkin:service:basicevent:1\">"
+                            "<BinaryState>1</BinaryState>"
+                          "</u:SetBinaryStateResponse>"
+                        "</s:Body>"
+                      "</s:Envelope>\r\n"
+                      "\r\n";
   }
 
   if(request.indexOf("<BinaryState>0</BinaryState>") > 0) {
       Serial.println("Got Turn off request");
       offCallback();
+      response_xml =  "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">"
+                        "<s:Body>"
+                          "<u:SetBinaryStateResponse xmlns:u=\"urn:Belkin:service:basicevent:1\">"
+                            "<BinaryState>0</BinaryState>"
+                          "</u:SetBinaryStateResponse>"
+                        "</s:Body>"
+                      "</s:Envelope>\r\n"
+                      "\r\n";
   }
 
-  Serial.println("Responding to Control request");
-  server->send(200, "text/plain", "");
+  server->send(200, "text/xml", response_xml.c_str());
+  Serial.print("Sending :");
+  Serial.println(response_xml);
 }
 
 void WemoSwitch::handleRoot(){
@@ -136,29 +158,36 @@ void WemoSwitch::handleSetupXml(){
   char s[16];
   sprintf(s, "%d.%d.%d.%d", localIP[0], localIP[1], localIP[2], localIP[3]);
 
-  String setup_xml = "<?xml version=\"1.0\"?>"
-        "<root>"
-         "<device>"
-            "<deviceType>urn:Belkin:device:controllee:1</deviceType>"
-            "<friendlyName>"+ device_name +"</friendlyName>"
-            "<manufacturer>Belkin International Inc.</manufacturer>"
-            "<modelName>Emulated Socket</modelName>"
-            "<modelNumber>3.1415</modelNumber>"
-            "<UDN>uuid:"+ persistent_uuid +"</UDN>"
-            "<serialNumber>221517K0101769</serialNumber>"
-            "<binaryState>0</binaryState>"
-            "<serviceList>"
-              "<service>"
-                  "<serviceType>urn:Belkin:service:basicevent:1</serviceType>"
-                  "<serviceId>urn:Belkin:serviceId:basicevent1</serviceId>"
-                  "<controlURL>/upnp/control/basicevent1</controlURL>"
-                  "<eventSubURL>/upnp/event/basicevent1</eventSubURL>"
-                  "<SCPDURL>/eventservice.xml</SCPDURL>"
-              "</service>"
-          "</serviceList>"
-          "</device>"
-        "</root>\r\n"
-        "\r\n";
+   String setup_xml = "<?xml version=\"1.0\"?>"
+         "<root xmlns=\"urn:Belkin:device-1-0\">"
+           "<specVersion>"
+           "<major>1</major>"
+           "<minor>0</minor>"
+           "</specVersion>"
+           "<device>"
+             "<deviceType>urn:Belkin:device:controllee:1</deviceType>"
+             "<friendlyName>"+ device_name +"</friendlyName>"
+             "<manufacturer>Belkin International Inc.</manufacturer>"
+             "<modelName>Emulated Socket</modelName>"
+             "<modelNumber>3.1415</modelNumber>"
+             "<manufacturerURL>http://www.belkin.com</manufacturerURL>"
+             "<modelDescription>Belkin Plugin Socket 1.0</modelDescription>"
+             "<modelURL>http://www.belkin.com/plugin/</modelURL>"
+             "<UDN>uuid:"+ persistent_uuid +"</UDN>"
+             "<serialNumber>"+ serial +"</serialNumber>"
+             "<binaryState>0</binaryState>"
+             "<serviceList>"
+               "<service>"
+                 "<serviceType>urn:Belkin:service:basicevent:1</serviceType>"
+                 "<serviceId>urn:Belkin:serviceId:basicevent1</serviceId>"
+                 "<controlURL>/upnp/control/basicevent1</controlURL>"
+                 "<eventSubURL>/upnp/event/basicevent1</eventSubURL>"
+                 "<SCPDURL>/eventservice.xml</SCPDURL>"
+               "</service>"
+             "</serviceList>"
+           "</device>"
+         "</root>\r\n"
+         "\r\n";
 
     server->send(200, "text/xml", setup_xml.c_str());
 
