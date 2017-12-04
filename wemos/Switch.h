@@ -18,7 +18,8 @@ private:
         unsigned int localPort;
         CallbackFunction onCallback;
         CallbackFunction offCallback;
-    
+        bool switchStatus;
+          
         void startWebServer();
         void handleEventservice();
         void handleUpnpControl();
@@ -31,6 +32,7 @@ public:
         String getAlexaInvokeName();
         void serverLoop();
         void respondToSearch(IPAddress& senderIP, unsigned int senderPort);
+        void sendRelayState();
 };
  
 #endif

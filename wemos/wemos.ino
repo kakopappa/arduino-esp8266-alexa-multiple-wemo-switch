@@ -10,14 +10,14 @@
 boolean connectWifi();
 
 //on/off callbacks 
-void officeLightsOn();
-void officeLightsOff();
-void kitchenLightsOn();
-void kitchenLightsOff();
+bool officeLightsOn();
+bool officeLightsOff();
+bool kitchenLightsOn();
+bool kitchenLightsOff();
 
 // Change this before you flash
-const char* ssid = "Aruna";
-const char* password = "*****";
+const char* ssid = "June";
+const char* password = "wifipassword";
 
 boolean wifiConnected = false;
 
@@ -25,6 +25,9 @@ UpnpBroadcastResponder upnpBroadcastResponder;
 
 Switch *office = NULL;
 Switch *kitchen = NULL;
+
+bool isOfficeLightsOn = false;
+bool isKitchenLightstsOn = false;
 
 void setup()
 {
@@ -36,7 +39,7 @@ void setup()
   if(wifiConnected){
     upnpBroadcastResponder.beginUdpMulticast();
     
-    // Define your switches here. Max 14
+    // Define your switches here. Max 10
     // Format: Alexa invocation name, local port no, on callback, off callback
     office = new Switch("office lights", 80, officeLightsOn, officeLightsOff);
     kitchen = new Switch("kitchen lights", 81, kitchenLightsOn, kitchenLightsOff);
@@ -57,20 +60,32 @@ void loop()
 	 }
 }
 
-void officeLightsOn() {
-    Serial.print("Switch 1 turn on ...");
+bool officeLightsOn() {
+    Serial.println("Switch 1 turn on ...");
+    
+    isOfficeLightsOn = true;    
+    return isOfficeLightsOn;
 }
 
-void officeLightsOff() {
-    Serial.print("Switch 1 turn off ...");
+bool officeLightsOff() {
+    Serial.println("Switch 1 turn off ...");
+
+    isOfficeLightsOn = false;
+    return isOfficeLightsOn;
 }
 
-void kitchenLightsOn() {
-    Serial.print("Switch 2 turn on ...");
+bool kitchenLightsOn() {
+    Serial.println("Switch 2 turn on ...");
+
+    isKitchenLightstsOn = true;
+    return isKitchenLightstsOn;
 }
 
-void kitchenLightsOff() {
-  Serial.print("Switch 2 turn off ...");
+bool kitchenLightsOff() {
+  Serial.println("Switch 2 turn off ...");
+
+  isKitchenLightstsOn = false;
+  return isKitchenLightstsOn;
 }
 
 // connect to wifi – returns true if successful or false if not
