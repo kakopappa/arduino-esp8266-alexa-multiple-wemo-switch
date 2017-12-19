@@ -68,7 +68,8 @@ void UpnpBroadcastResponder::serverLoop(){
   String request = String((char *)packetBuffer);
 
   if(request.indexOf('M-SEARCH') > 0) {
-      if(request.indexOf("urn:Belkin:device:**") > 0) {
+      // Issue https://github.com/kakopappa/arduino-esp8266-alexa-multiple-wemo-switch/issues/22 fix
+      if((request.indexOf("urn:Belkin:device:**") > 0) || (request.indexOf("ssdp:all") > 0) || (request.indexOf("upnp:rootdevice") > 0)) {
         Serial.println("Got UDP Belkin Request..");
         
         // int arrSize = sizeof(switchs) / sizeof(Switch);
