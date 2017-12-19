@@ -211,7 +211,7 @@ void Switch::sendRelayState() {
   server->send(200, "text/xml", body.c_str());
 
   Serial.print("Sending :");
-  Serial.println(setup_xml);
+  Serial.println(body);
 }
 
 void Switch::respondToSearch(IPAddress& senderIP, unsigned int senderPort) {
