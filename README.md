@@ -20,6 +20,9 @@ How to use:
 Previous post on single wemo switch
 https://github.com/kakopappa/arduino-esp8266-alexa-wemo-switch/edit/master/README.md
 
+## If you have issues discovering please consider using sinric smart home skill. 
+* [sinric.com](https://sinric.com)
+
 
 ### Articles about the Wemos switch
 * [monkeytypewritr](https://medium.com/@monkeytypewritr/amazon-echo-esp8266-iot-a42076daafa5#.oc4od1xa0)
