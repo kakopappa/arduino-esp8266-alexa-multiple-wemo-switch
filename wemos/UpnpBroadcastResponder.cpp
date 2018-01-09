@@ -5,7 +5,7 @@
 // Multicast declarations
 IPAddress ipMulti(239, 255, 255, 250);
 const unsigned int portMulti = 1900;
-char packetBuffer[512];   
+char packetBuffer[UDP_TX_PACKET_MAX_SIZE];
 
 #define MAX_SWITCHES 14
 Switch switches[MAX_SWITCHES] = {};
