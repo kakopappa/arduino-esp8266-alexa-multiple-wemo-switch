@@ -33,6 +33,7 @@ public:
         void serverLoop();
         void respondToSearch(IPAddress& senderIP, unsigned int senderPort);
         void sendRelayState();
+        void setSwitchStatus(bool status);
 };
  
 #endif
