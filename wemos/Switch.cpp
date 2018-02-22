@@ -196,6 +196,10 @@ String Switch::getAlexaInvokeName() {
     return device_name;
 }
 
+void Switch::setSwitchStatus(bool status) {
+    switchStatus = status;
+}
+
 void Switch::sendRelayState() {
   String body = 
       "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"><s:Body>\r\n"
