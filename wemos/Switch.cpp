@@ -240,7 +240,9 @@ void Switch::respondToSearch(IPAddress& senderIP, unsigned int senderPort) {
 
   UDP.beginPacket(senderIP, senderPort);
   UDP.write(response.c_str());
-  UDP.endPacket();                    
+  UDP.endPacket();
+  /* add yield to fix UDP sending response. For more informations : https://www.tabsoverspaces.com/233359-udp-packets-not-sent-from-esp-8266-solved */
+  yield();      
 
    Serial.println("Response sent !");
 }
