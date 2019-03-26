@@ -2,7 +2,7 @@
 #include <ESP8266WebServer.h>
 #include <WiFiUdp.h>
 #include <functional>
-#include "switch.h"
+#include "Switch.h"
 #include "UpnpBroadcastResponder.h"
 #include "CallbackFunction.h"
 
