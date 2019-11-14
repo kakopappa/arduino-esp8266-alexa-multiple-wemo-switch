@@ -1,4 +1,7 @@
-#Arduino Esp8266 Alexa Multiple Belkin wemo switch emulator
+## Arduino Esp8266 Alexa Multiple Belkin wemo switch emulator
+
+### If you have [issues](https://github.com/kakopappa/arduino-esp8266-alexa-wemo-switch/issues/7#issuecomment-355533848) discovering please consider using Sinric Pro smart home skill. 
+* [sinric.pro](https://sinric.pro) 
 
 This project supports emulating upto 14 belkin wemo switches using 1 ESP 8266  chip.
 
