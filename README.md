@@ -18,25 +18,25 @@ How to use:
 3. Flash 
 4. Enjoy
 
-## Do you want to turn on / off your TV, AirCon (AC) using Amazon Alexa? Checkout my latest project https://irdevkit.com/
+#### Do you want to turn on / off your TV, AirCon (AC) using Amazon Alexa? Checkout my latest project https://irdevkit.com/
 
 Previous post on single wemo switch
 https://github.com/kakopappa/arduino-esp8266-alexa-wemo-switch/edit/master/README.md
 
-### If you have issues discovering please consider using sinric smart home skill. 
+#### If you have issues discovering please consider using sinric smart home skill. 
 https://github.com/kakopappa/arduino-esp8266-alexa-wemo-switch/issues/7#issuecomment-355533848
 * [sinric.com](https://sinric.com) 
 
 
-### Articles about the Wemos switch
+#### Articles about the Wemos switch
 * [monkeytypewritr](https://medium.com/@monkeytypewritr/amazon-echo-esp8266-iot-a42076daafa5#.oc4od1xa0)
 
 
-### Credits
+#### Credits
 
 - makermusings - [GitHub](https://github.com/makermusings/fauxmo)
 
-### Developed By
+#### Developed By
 
 * Aruna Tennakoon
  * [paypal.me/arunat](http://paypal.me/arunat)
