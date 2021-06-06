@@ -27,6 +27,8 @@ https://github.com/kakopappa/arduino-esp8266-alexa-wemo-switch/edit/master/READM
 https://github.com/kakopappa/arduino-esp8266-alexa-wemo-switch/issues/7#issuecomment-355533848
 * [sinric.com](https://sinric.com) 
 
+#### Looking for a Cheap DIY Alexa Light Bulb?
+https://github.com/kakopappa/ble-light-bulb
 
 #### Articles about the Wemos switch
 * [monkeytypewritr](https://medium.com/@monkeytypewritr/amazon-echo-esp8266-iot-a42076daafa5#.oc4od1xa0)
