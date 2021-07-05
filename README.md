@@ -13,10 +13,11 @@ How to use:
 
 1. Download the code
 2. Open wemos.ino in the Arduino editor.
-2. Change the WI-FI settings. 
-3. Define switches and callbacks
-3. Flash 
-4. Enjoy
+3. Change the WI-FI settings. 
+4. Define switches and callbacks
+5. Flash 
+6. Quick test via browser example: To turn on switch #1 http://IP_ADDRESS:80/upnp/control/basicevent1?SetBinaryState=SetBinaryState%3CBinaryState%3E1%3C/BinaryState%3E and to turn it back off http://IP_ADDRESS:80/upnp/control/basicevent1?SetBinaryState=SetBinaryState%3CBinaryState%3E0%3C/BinaryState%3E
+7. Enjoy
 
 #### Do you want to turn on / off your TV, AirCon (AC) using Amazon Alexa? Checkout my latest project https://irdevkit.com/
 
