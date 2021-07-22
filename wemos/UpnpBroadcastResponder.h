@@ -3,7 +3,7 @@
  
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
-#include <WiFiUDP.h>
+#include <WiFiUdp.h>
 #include "Switch.h"
 
 class UpnpBroadcastResponder {
